@@ -18,7 +18,7 @@ namespace SearchTiles.Tests
             Assert.IsFalse(String.IsNullOrWhiteSpace(element.Name));
             Assert.IsFalse(String.IsNullOrWhiteSpace(element.Abbreviation));
             Assert.AreEqual(UNIQUE_KEY_ONE, element.Identity);
-            Assert.IsTrue(element.Hue > -1 && element.Hue < 256);
+            Assert.IsTrue(element.Hue > -1 && element.Hue < AlienElement.MAX_HUE);
         }
 
         [TestMethod]
