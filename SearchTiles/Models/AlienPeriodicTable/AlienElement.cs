@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SearchTiles.Models.AlienPeriodicTable
 {
-    public class AlienElement
+    public class AlienElement : IElementModel
     {
         private const int HASHER = 13;
 
@@ -50,9 +50,9 @@ namespace SearchTiles.Models.AlienPeriodicTable
             );
         }
 
-        public readonly int Identity;
-        public readonly string Name;
-        public readonly string Abbreviation;
-        public readonly int Hue;
+        public int Identity { get; }
+        public string Name { get; }
+        public string Abbreviation { get; }
+        public int Hue { get; }
     }
 }
