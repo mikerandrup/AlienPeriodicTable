@@ -259,6 +259,40 @@ var SearchTiles;
 (function (SearchTiles) {
     var Components;
     (function (Components) {
+        Components.FilterBox = React.createClass({
+            getInitialState: function () {
+                return {
+                    filterValue: ""
+                };
+            },
+            // inputs are funny in react.  You are actually responsible for updating
+            // the text value as typing happens, and rapidly re-rendering it
+            handleTextChange: function (event) {
+                this.setState({
+                    filterValue: event.target.value
+                });
+                // fire the action with updated filter value in a throttled way
+            },
+            // I don't love this, but it does work
+            handleTextClear: function () {
+                this.handleTextChange({
+                    target: {
+                        value: ""
+                    }
+                });
+            },
+            render: function () {
+                return (React.createElement("div", {className: "filterHolder"}, React.createElement("input", {onChange: this.handleTextChange, value: this.state.filterValue, className: "filterInput", placeholder: "type to filter elements"}), React.createElement("button", {onClick: this.handleTextClear, className: "filterClear"}, "X")));
+            }
+        });
+    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../stores/elementtilestore.ts" />
+/// <reference path="elementtile.tsx" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Components;
+    (function (Components) {
         var ElementTileStore = SearchTiles.Stores.ElementTileStore;
         Components.TileHolder = React.createClass({
             // has no props
@@ -303,6 +337,7 @@ var SearchTiles;
 /// <reference path="actions/lifecycleactions.ts" />
 /// <reference path="utils/appstart.ts" />
 /// <reference path="components/elementtile.tsx" />
+/// <reference path="components/filterbox.tsx" />
 /// <reference path="components/tileholder.tsx" />
 /// <reference path="../librarydefinitions/react-stub.d.ts" />
 var SearchTiles;
@@ -310,9 +345,10 @@ var SearchTiles;
     var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
     var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecycle.ApplicationStarted;
     var TileHolder = SearchTiles.Components.TileHolder;
+    var FilterBox = SearchTiles.Components.FilterBox;
     var Application = React.createClass({
         render: function () {
-            return (React.createElement("div", null, React.createElement(TileHolder, null)));
+            return (React.createElement("div", null, React.createElement(FilterBox, null), React.createElement(TileHolder, null)));
         }
     });
     // This root application component gets to reach into the DOM.

@@ -1,6 +1,7 @@
 ﻿/// <reference path="actions/lifecycleactions.ts" />
 /// <reference path="utils/appstart.ts" />
 /// <reference path="components/elementtile.tsx" />
+/// <reference path="components/filterbox.tsx" />
 /// <reference path="components/tileholder.tsx" />
 /// <reference path="../librarydefinitions/react-stub.d.ts" />
 module SearchTiles {
@@ -8,12 +9,14 @@ module SearchTiles {
     import RegisterDOMReadyFunction = Utils.AppStart.RegisterDomReadyFunction;
     import TriggerApplicationStartedAction = Actions.Lifecycle.ApplicationStarted;
     import TileHolder = Components.TileHolder;
+    import FilterBox = Components.FilterBox;
 
     var Application = React.createClass({
 
         render: function () {
             return (
                 <div>
+                    <FilterBox />
                     <TileHolder />
                 </div>
             );
