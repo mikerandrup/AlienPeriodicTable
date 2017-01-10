@@ -248,7 +248,7 @@ var SearchTiles;
                 var backroundStyles = {
                     backgroundColor: "hsl(" + tile.Hue + ", 100%, 80%)"
                 };
-                return (React.createElement("div", {style: backroundStyles}, React.createElement("div", null, tile.Abbreviation), React.createElement("div", null, tile.Name), React.createElement("div", null, tile.Identity)));
+                return (React.createElement("div", {style: backroundStyles, className: "elementTile"}, React.createElement("div", {className: "elementIdentity"}, tile.Identity), React.createElement("div", {className: "elementAbbrev"}, tile.Abbreviation), React.createElement("div", {className: "elementName"}, tile.Name)));
             }
         });
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
@@ -287,10 +287,10 @@ var SearchTiles;
                 var childComponents = this.state.tileData.map(function (tile) {
                     return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
                 });
-                return (React.createElement("div", null, childComponents));
+                return (React.createElement("div", {className: "tileHolder"}, childComponents));
             },
             renderLoadingIndicator: function () {
-                return (React.createElement("div", null, "Like, loading the data and stuff.  Wait up for a sec."));
+                return (React.createElement("div", {className: "tileHolder"}, "Like, loading the data and stuff.  Wait up for a sec."));
             },
             render: function () {
                 return this.state.dataIsReady ?

@@ -52,7 +52,7 @@ module SearchTiles.Components {
             );
 
             return (
-                <div>
+                <div className="tileHolder">
                     {childComponents}
                 </div>
             );
@@ -60,7 +60,7 @@ module SearchTiles.Components {
 
         renderLoadingIndicator() {
             return (
-                <div>
+                <div className="tileHolder">
                     Like, loading the data and stuff.  Wait up for a sec.
                 </div>
             );

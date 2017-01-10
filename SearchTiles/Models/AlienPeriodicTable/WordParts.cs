@@ -51,7 +51,16 @@ namespace SearchTiles.Models.AlienPeriodicTable
         {
             "il",
             "it",
-            "ir"
+            "ir",
+            "el",
+            "et",
+            "er",
+            "al",
+            "at",
+            "ar",
+            "ul",
+            "ut",
+            "ur"
         };
 
         public static string[] Suffixes =

@@ -22,10 +22,10 @@ module SearchTiles.Components {
             };
 
             return (
-                <div style={backroundStyles}>
-                    <div>{tile.Abbreviation}</div>
-                    <div>{tile.Name}</div>
-                    <div>{tile.Identity}</div>
+                <div style={backroundStyles} className="elementTile">
+                    <div className="elementIdentity">{tile.Identity}</div>
+                    <div className="elementAbbrev">{tile.Abbreviation}</div>
+                    <div className="elementName">{tile.Name}</div>
                 </div>
             );
         }

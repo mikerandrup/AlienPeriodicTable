@@ -173,6 +173,7 @@
     <Content Include="Views\ReactApplication.cshtml" />
     <Content Include="__tsconfig.json" />
     <Content Include="content\javascript\compiledtypescript.js.map" />
+    <Content Include="content\stylesheets\main.css" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -23,20 +23,16 @@ namespace SearchTiles.Models.AlienPeriodicTable
             string prefix = WordParts.GetPrefixAtKey(position++);
             string infix1 = WordParts.GetInfixAtKey(position++);
             string infix2 = WordParts.GetInfixAtKey(position++);
-            string infix3 = WordParts.GetInfixAtKey(position++);
-            string infix4 = WordParts.GetInfixAtKey(position++);
             string suffix = WordParts.GetSuffixAtKey(position++);
 
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             Name = textInfo.ToTitleCase(
                 String.Format(
-                    "{0}{1}{2}{3}{4}{5}",
+                    "{0}{1}{2}{3}",
                     prefix,
                     infix1,
                     infix2,
-                    infix3,
-                    infix4,
                     suffix
                 )
             );

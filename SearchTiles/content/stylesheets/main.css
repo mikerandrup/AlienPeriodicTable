@@ -1,0 +1,37 @@
+﻿body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.tileHolder {
+
+}
+
+.elementTile {
+    position: relative;
+    width: 6.0em;
+    height: 6.0em;
+    padding: 0.5em;
+    display: inline-block;
+    margin: 0.5em;
+    overflow: hidden;
+}
+
+.elementIdentity {
+    position: absolute;
+    top: 0.0em;
+    right: 0.3em;
+    font-size: 1.5em;
+}
+
+.elementAbbrev {
+    font-size: 4.0em;
+}
+
+.elementName {
+    position: absolute;
+    bottom: 0.5em;
+    left: 0.5em;
+    font-size: 1.0em;
+    text-overflow: ellipsis;
+}
