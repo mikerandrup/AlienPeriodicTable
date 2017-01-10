@@ -1,11 +1,11 @@
 ﻿/// <reference path="actions/lifecycleactions.ts" />
-/// <reference path="util/appstart.ts" />
+/// <reference path="utils/appstart.ts" />
 /// <reference path="components/elementtile.tsx" />
 /// <reference path="../librarydefinitions/react-stub.d.ts" />
 module SearchTiles {
 
     import RegisterDOMReadyFunction = Utils.AppStart.RegisterDomReadyFunction;
-    import TriggerApplicationStartedAction = Actions.Lifecyle.ApplicationStarted;
+    import TriggerApplicationStartedAction = Actions.Lifecycle.ApplicationStarted;
     import ElementTileComponent = Components.ElementTile;
 
     var Application = React.createClass({

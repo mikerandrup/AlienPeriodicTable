@@ -1,6 +1,6 @@
 ﻿/// <reference path="../actions/actionbase.ts" />
 /// <reference path="../actions/dispatcher.ts" />
-/// <reference path="../util/eventemitter.ts" /> 
+/// <reference path="../utils/eventemitter.ts" /> 
 
 module SearchTiles.Stores {
 
@@ -17,7 +17,7 @@ module SearchTiles.Stores {
             this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
 
             Dispatcher.subscribeToActions(
-                this.HandleTheFactAnActionHappened
+                this.HandleTheFactAnActionHappened.bind(this)
             );
         }
 
@@ -55,7 +55,6 @@ module SearchTiles.Stores {
         HandleTheFactAnActionHappened(action: ActionBase) {
             // by default, do nothing.
             // override in derived stores as needed
-            console.log("An action totally just happened!", action);
         }
 
     }

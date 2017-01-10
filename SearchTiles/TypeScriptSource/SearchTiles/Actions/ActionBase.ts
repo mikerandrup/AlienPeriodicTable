@@ -6,7 +6,7 @@
             this.Payload = {};
         }
 
-        Name: ACTION_NAMES;
+        ActionType: ACTION_TYPES;
         Payload: any;
     }
 }

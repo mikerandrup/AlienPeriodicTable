@@ -1,6 +1,6 @@
 ﻿module SearchTiles.Actions {
 
-    export enum ACTION_NAMES {
+    export enum ACTION_TYPES {
 
         APPLICATION_STARTED,
         APPLICATION_SHUTDOWN

@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var SearchTiles;
 (function (SearchTiles) {
     var Actions;
@@ -15,11 +20,11 @@ var SearchTiles;
 (function (SearchTiles) {
     var Actions;
     (function (Actions) {
-        (function (ACTION_NAMES) {
-            ACTION_NAMES[ACTION_NAMES["APPLICATION_STARTED"] = 0] = "APPLICATION_STARTED";
-            ACTION_NAMES[ACTION_NAMES["APPLICATION_SHUTDOWN"] = 1] = "APPLICATION_SHUTDOWN";
-        })(Actions.ACTION_NAMES || (Actions.ACTION_NAMES = {}));
-        var ACTION_NAMES = Actions.ACTION_NAMES;
+        (function (ACTION_TYPES) {
+            ACTION_TYPES[ACTION_TYPES["APPLICATION_STARTED"] = 0] = "APPLICATION_STARTED";
+            ACTION_TYPES[ACTION_TYPES["APPLICATION_SHUTDOWN"] = 1] = "APPLICATION_SHUTDOWN";
+        })(Actions.ACTION_TYPES || (Actions.ACTION_TYPES = {}));
+        var ACTION_TYPES = Actions.ACTION_TYPES;
         ;
     })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
 })(SearchTiles || (SearchTiles = {}));
@@ -52,7 +57,7 @@ var SearchTiles;
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="actionbase.ts" />
-/// <reference path="../util/eventemitter.ts" />
+/// <reference path="../utils/eventemitter.ts" />
 var SearchTiles;
 (function (SearchTiles) {
     var Actions;
@@ -67,7 +72,7 @@ var SearchTiles;
                 EventEmitter.off(NAME_FOR_ALL_ACTION_EVENTS, actionHandler);
             },
             dispatch: function (actionToDispatch) {
-                console.log("Action Happened: " + actionToDispatch.Name);
+                console.log("Action Happened: " + actionToDispatch.ActionType);
                 EventEmitter.trigger(NAME_FOR_ALL_ACTION_EVENTS, actionToDispatch);
             }
         };
@@ -75,20 +80,20 @@ var SearchTiles;
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="actionbase.ts" />
 /// <reference path="dispatcher.ts" />
-/// <reference path="actionnames.ts" />
+/// <reference path="actiontypes.ts" />
 var SearchTiles;
 (function (SearchTiles) {
     var Actions;
     (function (Actions) {
-        var Lifecyle;
-        (function (Lifecyle) {
+        var Lifecycle;
+        (function (Lifecycle) {
             function ApplicationStarted() {
                 var appStartedAction = new Actions.ActionBase();
-                appStartedAction.Name = Actions.ACTION_NAMES.APPLICATION_STARTED;
+                appStartedAction.ActionType = Actions.ACTION_TYPES.APPLICATION_STARTED;
                 Actions.Dispatcher.dispatch(appStartedAction);
             }
-            Lifecyle.ApplicationStarted = ApplicationStarted;
-        })(Lifecyle = Actions.Lifecyle || (Actions.Lifecyle = {}));
+            Lifecycle.ApplicationStarted = ApplicationStarted;
+        })(Lifecycle = Actions.Lifecycle || (Actions.Lifecycle = {}));
     })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
 })(SearchTiles || (SearchTiles = {}));
 ;
@@ -117,13 +122,13 @@ var SearchTiles;
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="actions/lifecycleactions.ts" />
-/// <reference path="util/appstart.ts" />
+/// <reference path="utils/appstart.ts" />
 /// <reference path="components/elementtile.tsx" />
 /// <reference path="../librarydefinitions/react-stub.d.ts" />
 var SearchTiles;
 (function (SearchTiles) {
     var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
-    var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecyle.ApplicationStarted;
+    var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecycle.ApplicationStarted;
     var ElementTileComponent = SearchTiles.Components.ElementTile;
     var Application = React.createClass({
         render: function () {
@@ -141,35 +146,126 @@ var SearchTiles;
     // This binds our startup to the DOM being ready
     RegisterDOMReadyFunction(InitializeApplication);
 })(SearchTiles || (SearchTiles = {}));
-/// <reference path="../util/eventemitter.ts" /> 
+/// <reference path="../actions/actionbase.ts" />
+/// <reference path="../actions/dispatcher.ts" />
+/// <reference path="../utils/eventemitter.ts" /> 
 var SearchTiles;
 (function (SearchTiles) {
     var Stores;
     (function (Stores) {
         var EventEmitter = SearchTiles.Utils.EventEmitter;
+        var Dispatcher = SearchTiles.Actions.Dispatcher;
         var BASE_NAME_OF_CHANGE_EVENTS = "CHANGE-";
         var NULL_PAYLOAD_FOR_EVENTS = {};
-        var BaseStore = (function () {
-            function BaseStore() {
+        var StoreBase = (function () {
+            function StoreBase() {
                 // to be overridden in stores derived from this base
                 this.NameOfStore = "NamelessStore";
                 this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
+                Dispatcher.subscribeToActions(this.HandleTheFactAnActionHappened.bind(this));
             }
             // Components will use this to be notified of data updates
-            BaseStore.prototype.RegisterChangeHandler = function (changeCallback) {
+            StoreBase.prototype.RegisterChangeHandler = function (changeCallback) {
                 EventEmitter.on(this.StoreSpecificChangeEventName, changeCallback);
             };
             // When a component is about to go away, it should call this
-            BaseStore.prototype.DeRegisterChangeHandler = function (changeCallback) {
+            StoreBase.prototype.DeRegisterChangeHandler = function (changeCallback) {
                 EventEmitter.off(this.StoreSpecificChangeEventName, changeCallback);
             };
             // Derived stores call this to tell components something has changed
-            BaseStore.prototype.EmitChange = function () {
+            StoreBase.prototype.EmitChange = function () {
                 EventEmitter.trigger(this.StoreSpecificChangeEventName, NULL_PAYLOAD_FOR_EVENTS);
             };
-            return BaseStore;
+            // Allows store to know about actions in the app
+            StoreBase.prototype.HandleTheFactAnActionHappened = function (action) {
+                // by default, do nothing.
+                // override in derived stores as needed
+            };
+            return StoreBase;
         }());
-        Stores.BaseStore = BaseStore;
+        Stores.StoreBase = StoreBase;
+    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
+})(SearchTiles || (SearchTiles = {}));
+var SearchTiles;
+(function (SearchTiles) {
+    var Utils;
+    (function (Utils) {
+        function AjaxDataGetter(url, callback) {
+            var xhrObject = new XMLHttpRequest();
+            xhrObject.onreadystatechange = function (response) {
+                if (xhrObject.readyState === 4) {
+                    callback(JSON.parse(xhrObject.responseText));
+                }
+            };
+            xhrObject.open("GET", url, true);
+            xhrObject.send();
+        }
+        Utils.AjaxDataGetter = AjaxDataGetter;
+    })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="storebase.ts" />
+/// <reference path="../utils/ajax.ts" />
+/// <reference path="../actions/actionbase.ts" />
+/// <reference path="../actions/actiontypes.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Stores;
+    (function (Stores) {
+        var ACTION_TYPES = SearchTiles.Actions.ACTION_TYPES;
+        var AjaxDataGetter = SearchTiles.Utils.AjaxDataGetter;
+        var API_ENDPOINT = "/api/elementdata";
+        var ElementTileStoreClass = (function (_super) {
+            __extends(ElementTileStoreClass, _super);
+            function ElementTileStoreClass() {
+                _super.call(this);
+                // For namespacing the emitting of changes
+                this.NameOfStore = "ElementTileStore";
+            }
+            ElementTileStoreClass.prototype.getDataHasLoaded = function () {
+                return _dataHasLoaded;
+            };
+            // deep copy so we don't pass around a mutable reference
+            // to our single source of truth.  there are definite
+            // performance penalties to doing this everywhere, so use your judgement
+            ElementTileStoreClass.prototype.getElementCollection = function () {
+                return _tileData.map(function (element) {
+                    return {
+                        Identity: element.Identity,
+                        Name: element.Name,
+                        Abbreviation: element.Abbreviation,
+                        Hue: element.Hue
+                    };
+                });
+            };
+            ElementTileStoreClass.prototype.HandleTheFactAnActionHappened = function (action) {
+                switch (action.ActionType) {
+                    case ACTION_TYPES.APPLICATION_STARTED:
+                        this.GoAskForData();
+                        break;
+                    default:
+                }
+            };
+            // There are many patterns for this!  For simplicity, I'm
+            // having the store go get the data and deal with it directly
+            // Promises would have been nice here, but I'm keeping it simple
+            ElementTileStoreClass.prototype.GoAskForData = function () {
+                AjaxDataGetter(API_ENDPOINT, this.DealWithDataThatArrived.bind(this));
+            };
+            ElementTileStoreClass.prototype.DealWithDataThatArrived = function (apiData) {
+                // there's no transformation we need to do except for an explicit type cast
+                _tileData = apiData;
+                _dataHasLoaded = true;
+                this.EmitChange();
+            };
+            return ElementTileStoreClass;
+        }(Stores.StoreBase));
+        // I'm hiding the store's private data here in the outer closure.
+        // (Of course this means we had better not instantiate two stores)
+        // I like to stub everything out so the components have runtime protection
+        var _tileData = [];
+        var _dataHasLoaded = false;
+        // we export the actual constructed instance of the store
+        Stores.ElementTileStore = new ElementTileStoreClass();
     })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
 })(SearchTiles || (SearchTiles = {}));
 //# sourceMappingURL=compiledtypescript.js.map

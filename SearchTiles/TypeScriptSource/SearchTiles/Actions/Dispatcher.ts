@@ -1,5 +1,5 @@
 ﻿/// <reference path="actionbase.ts" />
-/// <reference path="../util/eventemitter.ts" />
+/// <reference path="../utils/eventemitter.ts" />
 module SearchTiles.Actions {
 
     import EventEmitter = Utils.EventEmitter;
@@ -23,7 +23,7 @@ module SearchTiles.Actions {
 
         dispatch(actionToDispatch: ActionBase) {
 
-            console.log("Action Happened: " + actionToDispatch.Name);
+            console.log("Action Happened: " + actionToDispatch.ActionType);
 
             EventEmitter.trigger(
                 NAME_FOR_ALL_ACTION_EVENTS,
