@@ -187,8 +187,15 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Application.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\LibraryDefinitions\react-stub.d.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionBase.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionNames.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\Dispatcher.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\LifecycleActions.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Application.tsx" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\ElementTile.tsx" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Util\AppStart.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Util\EventEmitter.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
