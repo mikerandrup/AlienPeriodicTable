@@ -1,8 +1,12 @@
-﻿/// <reference path="../util/eventemitter.ts" /> 
+﻿/// <reference path="../actions/actionbase.ts" />
+/// <reference path="../actions/dispatcher.ts" />
+/// <reference path="../util/eventemitter.ts" /> 
 
 module SearchTiles.Stores {
 
     import EventEmitter = Utils.EventEmitter;
+    import Dispatcher = Actions.Dispatcher;
+    import ActionBase = Actions.ActionBase;
 
     const BASE_NAME_OF_CHANGE_EVENTS = "CHANGE-";
     const NULL_PAYLOAD_FOR_EVENTS = {};
@@ -11,6 +15,10 @@ module SearchTiles.Stores {
 
         constructor() {
             this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
+
+            Dispatcher.subscribeToActions(
+                this.HandleTheFactAnActionHappened
+            );
         }
 
         // to be overridden in stores derived from this base
@@ -41,6 +49,13 @@ module SearchTiles.Stores {
                 this.StoreSpecificChangeEventName,
                 NULL_PAYLOAD_FOR_EVENTS
             );
+        }
+
+        // Allows store to know about actions in the app
+        HandleTheFactAnActionHappened(action: ActionBase) {
+            // by default, do nothing.
+            // override in derived stores as needed
+            console.log("An action totally just happened!", action);
         }
 
     }
