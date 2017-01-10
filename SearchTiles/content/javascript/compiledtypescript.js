@@ -141,19 +141,35 @@ var SearchTiles;
     // This binds our startup to the DOM being ready
     RegisterDOMReadyFunction(InitializeApplication);
 })(SearchTiles || (SearchTiles = {}));
-/// <reference path="../util/eventemitter.ts" />
+/// <reference path="../util/eventemitter.ts" /> 
 var SearchTiles;
 (function (SearchTiles) {
     var Stores;
     (function (Stores) {
         var EventEmitter = SearchTiles.Utils.EventEmitter;
+        var BASE_NAME_OF_CHANGE_EVENTS = "CHANGE-";
+        var NULL_PAYLOAD_FOR_EVENTS = {};
         var BaseStore = (function () {
             function BaseStore() {
+                // to be overridden in stores derived from this base
+                this.NameOfStore = "NamelessStore";
+                this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
             }
+            // Components will use this to be notified of data updates
+            BaseStore.prototype.RegisterChangeHandler = function (changeCallback) {
+                EventEmitter.on(this.StoreSpecificChangeEventName, changeCallback);
+            };
+            // When a component is about to go away, it should call this
+            BaseStore.prototype.DeRegisterChangeHandler = function (changeCallback) {
+                EventEmitter.off(this.StoreSpecificChangeEventName, changeCallback);
+            };
+            // Derived stores call this to tell components something has changed
+            BaseStore.prototype.EmitChange = function () {
+                EventEmitter.trigger(this.StoreSpecificChangeEventName, NULL_PAYLOAD_FOR_EVENTS);
+            };
             return BaseStore;
         }());
         Stores.BaseStore = BaseStore;
-        changeEmitter: EventEmitter;
     })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
 })(SearchTiles || (SearchTiles = {}));
 //# sourceMappingURL=compiledtypescript.js.map

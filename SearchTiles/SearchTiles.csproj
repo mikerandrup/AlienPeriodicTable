@@ -194,6 +194,7 @@
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\LifecycleActions.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Application.tsx" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\ElementTile.tsx" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\StoreBase.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Util\AppStart.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Util\EventEmitter.ts" />
   </ItemGroup>
