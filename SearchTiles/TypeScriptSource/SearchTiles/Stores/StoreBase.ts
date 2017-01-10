@@ -11,7 +11,7 @@ module SearchTiles.Stores {
     const BASE_NAME_OF_CHANGE_EVENTS = "CHANGE-";
     const NULL_PAYLOAD_FOR_EVENTS = {};
 
-    export class BaseStore {
+    export class StoreBase {
 
         constructor() {
             this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
