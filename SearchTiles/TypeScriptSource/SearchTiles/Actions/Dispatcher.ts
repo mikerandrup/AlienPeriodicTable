@@ -2,7 +2,7 @@
 /// <reference path="../util/eventemitter.ts" />
 module SearchTiles.Actions {
 
-    import EventEmitter = Util.EventEmitter;
+    import EventEmitter = Utils.EventEmitter;
 
     const NAME_FOR_ALL_ACTION_EVENTS = "ACTION";
     export var Dispatcher = {

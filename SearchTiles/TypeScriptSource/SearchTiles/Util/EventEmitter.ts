@@ -1,4 +1,4 @@
-﻿module SearchTiles.Util {
+﻿module SearchTiles.Utils {
 
     // Based on Jerome Etienne's "MicroEvent" package
     // https://github.com/jeromeetienne/microevent.js

@@ -25,13 +25,13 @@ var SearchTiles;
 })(SearchTiles || (SearchTiles = {}));
 var SearchTiles;
 (function (SearchTiles) {
-    var Util;
-    (function (Util) {
+    var Utils;
+    (function (Utils) {
         // Based on Jerome Etienne's "MicroEvent" package
         // https://github.com/jeromeetienne/microevent.js
         // Why? 15 lines of code and it's well tested.
         var registeredEvents = {};
-        Util.EventEmitter = {
+        Utils.EventEmitter = {
             on: function (eventName, handler) {
                 registeredEvents[eventName] = registeredEvents[eventName] || [];
                 registeredEvents[eventName].push(handler);
@@ -49,7 +49,7 @@ var SearchTiles;
                 }
             }
         };
-    })(Util = SearchTiles.Util || (SearchTiles.Util = {}));
+    })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="actionbase.ts" />
 /// <reference path="../util/eventemitter.ts" />
@@ -57,7 +57,7 @@ var SearchTiles;
 (function (SearchTiles) {
     var Actions;
     (function (Actions) {
-        var EventEmitter = SearchTiles.Util.EventEmitter;
+        var EventEmitter = SearchTiles.Utils.EventEmitter;
         var NAME_FOR_ALL_ACTION_EVENTS = "ACTION";
         Actions.Dispatcher = {
             subscribeToActions: function (actionHandler) {
@@ -140,5 +140,20 @@ var SearchTiles;
     }
     // This binds our startup to the DOM being ready
     RegisterDOMReadyFunction(InitializeApplication);
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../util/eventemitter.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Stores;
+    (function (Stores) {
+        var EventEmitter = SearchTiles.Utils.EventEmitter;
+        var BaseStore = (function () {
+            function BaseStore() {
+            }
+            return BaseStore;
+        }());
+        Stores.BaseStore = BaseStore;
+        changeEmitter: EventEmitter;
+    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
 })(SearchTiles || (SearchTiles = {}));
 //# sourceMappingURL=compiledtypescript.js.map
