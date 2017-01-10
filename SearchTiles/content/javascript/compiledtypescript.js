@@ -72,7 +72,6 @@ var SearchTiles;
                 EventEmitter.off(NAME_FOR_ALL_ACTION_EVENTS, actionHandler);
             },
             dispatch: function (actionToDispatch) {
-                console.log("Action Happened: " + actionToDispatch.ActionType);
                 EventEmitter.trigger(NAME_FOR_ALL_ACTION_EVENTS, actionToDispatch);
             }
         };
@@ -109,42 +108,6 @@ var SearchTiles;
             AppStart.RegisterDomReadyFunction = RegisterDomReadyFunction;
         })(AppStart = Utils.AppStart || (Utils.AppStart = {}));
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var Components;
-    (function (Components) {
-        Components.ElementTile = React.createClass({
-            render: function () {
-                return React.createElement("div", null, "I am an ElementTile component!");
-            }
-        });
-    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
-})(SearchTiles || (SearchTiles = {}));
-/// <reference path="actions/lifecycleactions.ts" />
-/// <reference path="utils/appstart.ts" />
-/// <reference path="components/elementtile.tsx" />
-/// <reference path="../librarydefinitions/react-stub.d.ts" />
-var SearchTiles;
-(function (SearchTiles) {
-    var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
-    var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecycle.ApplicationStarted;
-    var ElementTileComponent = SearchTiles.Components.ElementTile;
-    var Application = React.createClass({
-        render: function () {
-            return (React.createElement("div", null, "Hey, look! React initialized and mounted the root component!", React.createElement(ElementTileComponent, null)));
-        }
-    });
-    // This root application component gets to reach into the DOM.
-    // Such things won't happen anywhere else.
-    function InitializeApplication() {
-        // This tells ReactDOM to mount the root component in the DOM
-        ReactDOM.render(React.createElement(Application, null), document.getElementById('application'));
-        // This kicks off everything going on in the Flux pattern
-        TriggerApplicationStartedAction();
-    }
-    // This binds our startup to the DOM being ready
-    RegisterDOMReadyFunction(InitializeApplication);
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="../actions/actionbase.ts" />
 /// <reference path="../actions/dispatcher.ts" />
@@ -255,6 +218,7 @@ var SearchTiles;
                 // there's no transformation we need to do except for an explicit type cast
                 _tileData = apiData;
                 _dataHasLoaded = true;
+                // tell any listening components we've updated *something* 
                 this.EmitChange();
             };
             return ElementTileStoreClass;
@@ -267,5 +231,99 @@ var SearchTiles;
         // we export the actual constructed instance of the store
         Stores.ElementTileStore = new ElementTileStoreClass();
     })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../stores/elementtilestore.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Components;
+    (function (Components) {
+        Components.ElementTile = React.createClass({
+            // in regular react you would use a "propTypes" declaration here
+            /* propTypes = {
+                tileData: IElementModel
+            } */
+            render: function () {
+                // Your component now knows what the contract is with the store
+                var tile = this.props.tileData;
+                var backroundStyles = {
+                    backgroundColor: "hsl(" + tile.Hue + ", 100%, 80%)"
+                };
+                return (React.createElement("div", {style: backroundStyles}, React.createElement("div", null, tile.Abbreviation), React.createElement("div", null, tile.Name), React.createElement("div", null, tile.Identity)));
+            }
+        });
+    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../stores/elementtilestore.ts" />
+/// <reference path="elementtile.tsx" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Components;
+    (function (Components) {
+        var ElementTileStore = SearchTiles.Stores.ElementTileStore;
+        Components.TileHolder = React.createClass({
+            // has no props
+            // again, there's lots of debate about whether there should
+            // be a container layer that deals with all store data and actions
+            // or if components should actually behave in a self sufficient way
+            componentDidMount: function () {
+                ElementTileStore.RegisterChangeHandler(this.handleStoreChange.bind(this));
+            },
+            componentWillUnmount: function () {
+                ElementTileStore.DeRegisterChangeHandler(this.handleStoreChange.bind(this));
+            },
+            getInitialState: function () {
+                return this.grabDataForState();
+            },
+            grabDataForState: function () {
+                return {
+                    dataIsReady: ElementTileStore.getDataHasLoaded(),
+                    tileData: ElementTileStore.getElementCollection()
+                };
+            },
+            handleStoreChange: function () {
+                this.setState(this.grabDataForState());
+            },
+            renderWithData: function () {
+                var childComponents = this.state.tileData.map(function (tile) {
+                    return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
+                });
+                return (React.createElement("div", null, childComponents));
+            },
+            renderLoadingIndicator: function () {
+                return (React.createElement("div", null, "Like, loading the data and stuff.  Wait up for a sec."));
+            },
+            render: function () {
+                return this.state.dataIsReady ?
+                    this.renderWithData() :
+                    this.renderLoadingIndicator();
+            }
+        });
+    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="actions/lifecycleactions.ts" />
+/// <reference path="utils/appstart.ts" />
+/// <reference path="components/elementtile.tsx" />
+/// <reference path="components/tileholder.tsx" />
+/// <reference path="../librarydefinitions/react-stub.d.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
+    var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecycle.ApplicationStarted;
+    var TileHolder = SearchTiles.Components.TileHolder;
+    var Application = React.createClass({
+        render: function () {
+            return (React.createElement("div", null, React.createElement(TileHolder, null)));
+        }
+    });
+    // This root application component gets to reach into the DOM.
+    // Such things won't happen anywhere else.
+    function InitializeApplication() {
+        // This tells ReactDOM to mount the root component in the DOM
+        ReactDOM.render(React.createElement(Application, null), document.getElementById('application'));
+        // This kicks off everything going on in the Flux pattern
+        TriggerApplicationStartedAction();
+    }
+    // This binds our startup to the DOM being ready
+    RegisterDOMReadyFunction(InitializeApplication);
 })(SearchTiles || (SearchTiles = {}));
 //# sourceMappingURL=compiledtypescript.js.map

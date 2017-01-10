@@ -22,9 +22,6 @@ module SearchTiles.Actions {
         },
 
         dispatch(actionToDispatch: ActionBase) {
-
-            console.log("Action Happened: " + actionToDispatch.ActionType);
-
             EventEmitter.trigger(
                 NAME_FOR_ALL_ACTION_EVENTS,
                 actionToDispatch

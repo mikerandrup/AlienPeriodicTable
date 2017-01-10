@@ -66,6 +66,7 @@ module SearchTiles.Stores {
 
             _dataHasLoaded = true;
 
+            // tell any listening components we've updated *something* 
             this.EmitChange();
         }
     }

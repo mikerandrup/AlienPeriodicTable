@@ -196,6 +196,7 @@
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\ElementTile.tsx" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\ElementTileStore.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\StoreBase.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\TileHolder.tsx" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\AppStart.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\Ajax.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\EventEmitter.ts" />
