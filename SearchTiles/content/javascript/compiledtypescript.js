@@ -399,6 +399,12 @@ var SearchTiles;
     var Components;
     (function (Components) {
         var ElementTileStore = SearchTiles.Stores.ElementTileStore;
+        // Provided directly by the React library itself
+        var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+        // This needs to match the animation duration in the style sheet.
+        // The CSSTransitionGroup does some cool stuff behind the scenes
+        // in terms of ripping stuff out of the DOM when the exit animation has finished.
+        var ANIMATION_DURATION_MS = 500;
         Components.TileHolder = React.createClass({
             // has no props
             // again, there's lots of debate about whether there should
@@ -426,8 +432,14 @@ var SearchTiles;
                 var childComponents = this.state.tileData.map(function (tile) {
                     return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
                 });
-                return (React.createElement("div", {className: "tileHolder"}, childComponents));
+                return (React.createElement("div", {className: "tileHolder"}, React.createElement(CSSTransitionGroup, {style: {}, transitionName: "spinnypop", transitionEnter: true, transitionLeave: true, transitionEnterTimeout: ANIMATION_DURATION_MS, transitionLeaveTimeout: ANIMATION_DURATION_MS}, childComponents)));
             },
+            // This is actually pretty unnecessary.  Because we stubbed out
+            // an empty collection in the store that's available before
+            // data loads, this component can step over the empty collection
+            // and result in a no-op, which is actually valid and fine.
+            // Even better would be to stub out element tiles that spelled
+            // out the word "Loading" lol.  Totally doing that.
             renderLoadingIndicator: function () {
                 return (React.createElement("div", {className: "tileHolder"}, "Like, loading the data and stuff.  Wait up for a sec."));
             },

@@ -1,0 +1,63 @@
+﻿/* this is almost worth installing a Sass compiler into visual studio.  almost.  */
+
+.elementTile {
+    position: relative;
+    width: 6.0em;
+    height: 6.0em;
+    padding: 0.5em;
+    display: inline-block;
+    margin: 0.5em;
+    overflow: hidden;
+}
+
+
+/* 
+    The React CSSTransitionGroup is almost entirely
+    about naming conventions for your class names.
+    Once you've got that down, the rest is pretty
+    much a breeze.  I passed a prop to the transition 
+    component saying I wanted to use "spinnypop" as
+    the base name to apply its suffixes to.
+*/
+
+/* 
+    This one is the classname applied when the element is first
+    added to the DOM.. the starting state for appearing "-enter"
+*/
+.spinnypop-enter {
+  opacity: 0;
+  transform: rotate3d(0,2,0,180deg);
+}
+
+/* 
+    This one immediately gets applied on top of the initial style,
+    triggering whatever transitions are needed "-enter-active"
+*/
+.spinnypop-enter.spinnypop-enter-active {
+    opacity: 1;
+    transition: all 500ms ease-in-out; 
+    transform: rotate3d(0,2,0,0deg);
+}
+
+/* 
+    When it's time for a child component to go bye bye, 
+    the transition group component will initially apply
+    this classname to the element "-leave"
+*/
+.spinnypop-leave {
+    opacity: 1;
+    transform: rotate3d(0,2,0,0deg);
+}
+
+/*
+    It then immediately applies this to trigger whatever
+    transitions need to happen "-leave-active".
+    Lastly it rips the component out of the DOM, which
+    is why it needed the animation duration specified
+    as a prop back in the component.
+*/
+.spinnypop-leave.spinnypop-leave-active {
+    opacity: 0;
+    transition: all 500ms ease-in-out; 
+    transform: rotate3d(0,2,0,180deg);
+}

@@ -7,16 +7,6 @@
 
 }
 
-.elementTile {
-    position: relative;
-    width: 6.0em;
-    height: 6.0em;
-    padding: 0.5em;
-    display: inline-block;
-    margin: 0.5em;
-    overflow: hidden;
-}
-
 .elementIdentity {
     position: absolute;
     top: 0.0em;
