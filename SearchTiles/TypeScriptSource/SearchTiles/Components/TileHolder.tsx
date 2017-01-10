@@ -31,7 +31,7 @@ module SearchTiles.Components {
         grabDataForState() {
             return {
                 dataIsReady: ElementTileStore.getDataHasLoaded(),
-                tileData: ElementTileStore.getElementCollection()
+                tileData: ElementTileStore.getFilteredElementCollection()
             };
         },
 

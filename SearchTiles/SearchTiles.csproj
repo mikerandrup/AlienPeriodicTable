@@ -193,6 +193,7 @@
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionBase.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionTypes.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\Dispatcher.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\FilterActions.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\LifecycleActions.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Application.tsx" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\ElementTile.tsx" />
@@ -203,6 +204,7 @@
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\AppStart.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\Ajax.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\EventEmitter.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\Throttle.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

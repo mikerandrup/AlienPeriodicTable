@@ -23,6 +23,7 @@ var SearchTiles;
         (function (ACTION_TYPES) {
             ACTION_TYPES[ACTION_TYPES["APPLICATION_STARTED"] = 0] = "APPLICATION_STARTED";
             ACTION_TYPES[ACTION_TYPES["APPLICATION_SHUTDOWN"] = 1] = "APPLICATION_SHUTDOWN";
+            ACTION_TYPES[ACTION_TYPES["FILTER_CHANGED"] = 2] = "FILTER_CHANGED";
         })(Actions.ACTION_TYPES || (Actions.ACTION_TYPES = {}));
         var ACTION_TYPES = Actions.ACTION_TYPES;
         ;
@@ -77,6 +78,40 @@ var SearchTiles;
         };
     })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
 })(SearchTiles || (SearchTiles = {}));
+/// <reference path="actionbase.ts" />
+/// <reference path="dispatcher.ts" />
+/// <reference path="actiontypes.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Actions;
+    (function (Actions) {
+        var Filter;
+        (function (Filter) {
+            function FilterUpdated(newValue) {
+                var filterChangedAction = new FilterAction();
+                filterChangedAction.Payload = {
+                    newValue: newValue
+                };
+                Actions.Dispatcher.dispatch(filterChangedAction);
+            }
+            Filter.FilterUpdated = FilterUpdated;
+            // this is a little overkill, but I wanted to show how you could
+            // combine polymorphism to guarantee an action can still be passed
+            // around the event system without anything else caring, and yet the
+            // contract for what the specific payload is can still be enforced
+            var FilterAction = (function (_super) {
+                __extends(FilterAction, _super);
+                function FilterAction() {
+                    _super.call(this);
+                    this.ActionType = Actions.ACTION_TYPES.FILTER_CHANGED;
+                }
+                return FilterAction;
+            }(Actions.ActionBase));
+            Filter.FilterAction = FilterAction;
+        })(Filter = Actions.Filter || (Actions.Filter = {}));
+    })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
+})(SearchTiles || (SearchTiles = {}));
+;
 /// <reference path="actionbase.ts" />
 /// <reference path="dispatcher.ts" />
 /// <reference path="actiontypes.ts" />
@@ -190,8 +225,8 @@ var SearchTiles;
             // deep copy so we don't pass around a mutable reference
             // to our single source of truth.  there are definite
             // performance penalties to doing this everywhere, so use your judgement
-            ElementTileStoreClass.prototype.getElementCollection = function () {
-                return _tileData.map(function (element) {
+            ElementTileStoreClass.prototype.deepCopyCollection = function (collection) {
+                return collection.map(function (element) {
                     return {
                         Identity: element.Identity,
                         Name: element.Name,
@@ -200,10 +235,28 @@ var SearchTiles;
                     };
                 });
             };
+            ElementTileStoreClass.prototype.getFilteredElementCollection = function () {
+                var hasFilter = _filterValue !== "";
+                if (hasFilter) {
+                    return this.deepCopyCollection(_tileData.filter(applyFilter));
+                }
+                else {
+                    return this.deepCopyCollection(_tileData);
+                }
+            };
             ElementTileStoreClass.prototype.HandleTheFactAnActionHappened = function (action) {
                 switch (action.ActionType) {
                     case ACTION_TYPES.APPLICATION_STARTED:
                         this.GoAskForData();
+                        break;
+                    case ACTION_TYPES.FILTER_CHANGED:
+                        // Okay, yeah so this is really weird.  I'm using a lamba as a way to type cast
+                        // the action (and know the payload signature) without having to create
+                        // a new variable that would pollute the scope of this switch statement
+                        // Probably you don't want to do stuff like this in real life
+                        _filterValue = (function (action) { return action.Payload.newValue; })(action);
+                        _filterValue = _filterValue.toLowerCase();
+                        this.EmitChange();
                         break;
                     default:
                 }
@@ -223,11 +276,16 @@ var SearchTiles;
             };
             return ElementTileStoreClass;
         }(Stores.StoreBase));
+        function applyFilter(tile) {
+            return tile.Name.toLowerCase().indexOf(_filterValue) > -1;
+        }
         // I'm hiding the store's private data here in the outer closure.
         // (Of course this means we had better not instantiate two stores)
         // I like to stub everything out so the components have runtime protection
         var _tileData = [];
         var _dataHasLoaded = false;
+        // the sub-string we require to be present to include filtered elements
+        var _filterValue = "";
         // we export the actual constructed instance of the store
         Stores.ElementTileStore = new ElementTileStoreClass();
     })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
@@ -253,13 +311,53 @@ var SearchTiles;
         });
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
 })(SearchTiles || (SearchTiles = {}));
+var SearchTiles;
+(function (SearchTiles) {
+    var Utils;
+    (function (Utils) {
+        // I decided to drop this in, and lose the `lodash` dep
+        // Thank you to Remy Sharp https://remysharp.com/2010/07/21/throttling-function-calls
+        function Throttle(functionToThrottle, threshholdMilliseconds, theThisContext) {
+            threshholdMilliseconds || (threshholdMilliseconds = 250);
+            var last, deferTimer;
+            return function () {
+                var context = theThisContext || this;
+                var now = +new Date, args = arguments;
+                if (last && now < last + threshholdMilliseconds) {
+                    // hold on to it
+                    clearTimeout(deferTimer);
+                    deferTimer = setTimeout(function () {
+                        last = now;
+                        functionToThrottle.apply(context, args);
+                    }, threshholdMilliseconds);
+                }
+                else {
+                    last = now;
+                    functionToThrottle.apply(context, args);
+                }
+            };
+        }
+        Utils.Throttle = Throttle;
+    })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../actions/filteractions.ts" />
+/// <reference path="../utils/throttle.ts" />
 /// <reference path="../stores/elementtilestore.ts" />
 /// <reference path="elementtile.tsx" />
 var SearchTiles;
 (function (SearchTiles) {
     var Components;
     (function (Components) {
+        var FilterUpdatedAction = SearchTiles.Actions.Filter.FilterUpdated;
+        var Throttle = SearchTiles.Utils.Throttle;
+        // I'm thinking this will end up being deliberately high
+        // probably to time with the CSS animation duration
+        // (I suspect this will create a desirable effect)
+        var THROTTLE_MILLISECONDS = 500;
         Components.FilterBox = React.createClass({
+            componentDidMount: function () {
+                this.throttledFilterAction = Throttle(FilterUpdatedAction, THROTTLE_MILLISECONDS, this);
+            },
             getInitialState: function () {
                 return {
                     filterValue: ""
@@ -268,23 +366,30 @@ var SearchTiles;
             // inputs are funny in react.  You are actually responsible for updating
             // the text value as typing happens, and rapidly re-rendering it
             handleTextChange: function (event) {
+                var updatedValue = event.target.value;
+                // this triggers a re-render with the new input value
                 this.setState({
-                    filterValue: event.target.value
+                    filterValue: updatedValue
                 });
                 // fire the action with updated filter value in a throttled way
+                this.throttledFilterAction(updatedValue);
+                //FilterUpdatedAction(updatedValue);
             },
-            // I don't love this, but it does work
             handleTextClear: function () {
-                this.handleTextChange({
-                    target: {
-                        value: ""
-                    }
-                });
+                this.handleTextChange(makeFakeEventWithEmptyValue());
             },
             render: function () {
                 return (React.createElement("div", {className: "filterHolder"}, React.createElement("input", {onChange: this.handleTextChange, value: this.state.filterValue, className: "filterInput", placeholder: "type to filter elements"}), React.createElement("button", {onClick: this.handleTextClear, className: "filterClear"}, "X")));
             }
         });
+        // I don't love this, but it does work
+        function makeFakeEventWithEmptyValue() {
+            return {
+                target: {
+                    value: ""
+                }
+            };
+        }
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
 })(SearchTiles || (SearchTiles = {}));
 /// <reference path="../stores/elementtilestore.ts" />
@@ -311,7 +416,7 @@ var SearchTiles;
             grabDataForState: function () {
                 return {
                     dataIsReady: ElementTileStore.getDataHasLoaded(),
-                    tileData: ElementTileStore.getElementCollection()
+                    tileData: ElementTileStore.getFilteredElementCollection()
                 };
             },
             handleStoreChange: function () {
