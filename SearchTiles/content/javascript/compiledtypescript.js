@@ -360,6 +360,7 @@ var SearchTiles;
     (function (Components) {
         var ElementTileStore = SearchTiles.Stores.ElementTileStore;
         var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+        var ANIMATION_CSS_CLASS_PREFIX = "spinnypop";
         var ANIMATION_DURATION_MS = 500;
         ANIMATION_DURATION_MS += 200;
         Components.TileHolder = React.createClass({
@@ -382,10 +383,10 @@ var SearchTiles;
                 this.setState(this.grabDataForState());
             },
             render: function () {
-                var childComponents = this.state.tileData.map(function (tile) {
+                var childTileComponents = this.state.tileData.map(function (tile) {
                     return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
                 });
-                return (React.createElement("div", {className: "tileHolder"}, React.createElement(CSSTransitionGroup, {style: {}, transitionName: "spinnypop", transitionEnter: true, transitionLeave: true, transitionEnterTimeout: ANIMATION_DURATION_MS, transitionLeaveTimeout: ANIMATION_DURATION_MS}, childComponents)));
+                return (React.createElement("div", {className: "tileHolder"}, React.createElement(CSSTransitionGroup, {style: {}, transitionName: ANIMATION_CSS_CLASS_PREFIX, transitionEnter: true, transitionLeave: true, transitionEnterTimeout: ANIMATION_DURATION_MS, transitionLeaveTimeout: ANIMATION_DURATION_MS}, childTileComponents)));
             }
         });
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));

@@ -15,6 +15,9 @@ module SearchTiles.Components {
     export var FilterBox = React.createClass({
 
         componentDidMount() {
+
+            // We use the Throttle utility as a factory to produce a callback
+            // that won't fire incessantly while the user types in the input box
             this.throttledFilterAction = Throttle(
                 FilterUpdatedAction,
                 THROTTLE_MILLISECONDS,
@@ -41,7 +44,6 @@ module SearchTiles.Components {
 
             // fire the action with updated filter value in a throttled way
             this.throttledFilterAction(updatedValue);
-            //FilterUpdatedAction(updatedValue);
         },
 
         handleTextClear() {

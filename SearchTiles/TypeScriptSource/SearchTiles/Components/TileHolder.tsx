@@ -8,6 +8,10 @@ module SearchTiles.Components {
     // Provided directly by the React library itself
     var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+    // We will need to name our CSS classnames based on this
+    // check out the "animation.css" for a deeper explanation
+    const ANIMATION_CSS_CLASS_PREFIX = "spinnypop";
+
     // This needs to match the animation duration in the style sheet.
     // The CSSTransitionGroup does some cool stuff behind the scenes
     // in terms of ripping stuff out of the DOM when the exit animation has finished.
@@ -53,7 +57,7 @@ module SearchTiles.Components {
         },
 
         render() {
-            const childComponents = this.state.tileData.map(
+            const childTileComponents = this.state.tileData.map(
                 (tile: IElementModel) => 
                     <ElementTile
                         tileData={tile}
@@ -66,13 +70,13 @@ module SearchTiles.Components {
                 <div className="tileHolder">
                     <CSSTransitionGroup
                         style={{}}
-                        transitionName="spinnypop"
+                        transitionName={ANIMATION_CSS_CLASS_PREFIX}
                         transitionEnter={true}
                         transitionLeave={true}
                         transitionEnterTimeout={ANIMATION_DURATION_MS}
                         transitionLeaveTimeout={ANIMATION_DURATION_MS}
                     >
-                        {childComponents}
+                        {childTileComponents}
                     </CSSTransitionGroup>
                 </div>
             );
