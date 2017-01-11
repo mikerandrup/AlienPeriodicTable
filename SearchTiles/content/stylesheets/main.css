@@ -29,6 +29,7 @@
 .filterHolder {
     padding: 1em;
     text-align: center;
+    position: relative;
 }
 
 .filterInput {
@@ -41,9 +42,9 @@
 }
 
 .filterClear {
-    position: relative;
-    left: -3em;
-    top: -0.4em;
+    position: absolute;
+    right: 5.5em;
+    top: 2.5em;
     border-radius: 50%;
     border-style: solid;
     font-size: 1.5em;
