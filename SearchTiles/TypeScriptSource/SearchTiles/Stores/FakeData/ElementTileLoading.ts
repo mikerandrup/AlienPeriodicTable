@@ -2,7 +2,7 @@
 
     export function StubOutElementTileData() {
         return [
-            makeTile(" "),
+            makeTile(".."),
             makeTile("Lo"),
             makeTile("ad"),
             makeTile("in"),
