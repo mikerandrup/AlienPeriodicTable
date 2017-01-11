@@ -14,7 +14,7 @@ module SearchTiles.Components {
     var ANIMATION_DURATION_MS = 500;
 
     // That being said, I'm going to offset it a little as an artistic preference
-    //ANIMATION_DURATION_MS += 50;
+    ANIMATION_DURATION_MS += 200;
 
     export var TileHolder = React.createClass({
 
