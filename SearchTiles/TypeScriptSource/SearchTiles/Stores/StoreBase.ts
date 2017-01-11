@@ -13,16 +13,13 @@ module SearchTiles.Stores {
 
     export class StoreBase {
 
-        constructor() {
-            this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + this.NameOfStore;
+        constructor(nameOfDerivedStore: string) {
+            this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + nameOfDerivedStore;
 
             Dispatcher.subscribeToActions(
                 this.HandleTheFactAnActionHappened.bind(this)
             );
         }
-
-        // to be overridden in stores derived from this base
-        NameOfStore = "NamelessStore";
 
         // Since we use a super-simple singleton event system, namespace the change events per store
         StoreSpecificChangeEventName: string;

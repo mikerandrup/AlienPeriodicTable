@@ -11,6 +11,9 @@ module SearchTiles.Stores {
     import AjaxDataGetter = Utils.AjaxDataGetter;
     import StubOutElementTileData = FakeData.StubOutElementTileData;
 
+    // This is used to namespace change events to this store only
+    const NAME_OF_STORE = "ElementTileStore";
+
     // Implemented on the .NET side as a Web API controller
     const API_ENDPOINT = "/api/elementdata";
 
@@ -24,11 +27,8 @@ module SearchTiles.Stores {
     class ElementTileStoreClass extends StoreBase {
 
         constructor() {
-            super();
+            super(NAME_OF_STORE);
         }
-
-        // For namespacing the emitting of changes
-        NameOfStore = "ElementTileStore";
 
         getDataHasLoaded() {
             return _dataHasLoaded;
