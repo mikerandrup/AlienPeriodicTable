@@ -11,7 +11,10 @@ module SearchTiles.Components {
     // This needs to match the animation duration in the style sheet.
     // The CSSTransitionGroup does some cool stuff behind the scenes
     // in terms of ripping stuff out of the DOM when the exit animation has finished.
-    const ANIMATION_DURATION_MS = 500;
+    var ANIMATION_DURATION_MS = 500;
+
+    // That being said, I'm going to offset it a little as an artistic preference
+    //ANIMATION_DURATION_MS += 50;
 
     export var TileHolder = React.createClass({
 
@@ -49,7 +52,7 @@ module SearchTiles.Components {
             );
         },
 
-        renderWithData() {
+        render() {
             const childComponents = this.state.tileData.map(
                 (tile: IElementModel) => 
                     <ElementTile
@@ -73,26 +76,6 @@ module SearchTiles.Components {
                     </CSSTransitionGroup>
                 </div>
             );
-        },
-
-        // This is actually pretty unnecessary.  Because we stubbed out
-        // an empty collection in the store that's available before
-        // data loads, this component can step over the empty collection
-        // and result in a no-op, which is actually valid and fine.
-        // Even better would be to stub out element tiles that spelled
-        // out the word "Loading" lol.  Totally doing that.
-        renderLoadingIndicator() {
-            return (
-                <div className="tileHolder">
-                    Like, loading the data and stuff.  Wait up for a sec.
-                </div>
-            );
-        },
-
-        render() {
-            return this.state.dataIsReady ?
-                this.renderWithData() :
-                this.renderLoadingIndicator();
         }
 
     });

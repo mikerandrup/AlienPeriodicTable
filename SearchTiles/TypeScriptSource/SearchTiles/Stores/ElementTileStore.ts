@@ -1,5 +1,6 @@
 ﻿/// <reference path="storebase.ts" />
 /// <reference path="../utils/ajax.ts" />
+/// <reference path="fakedata/elementtileloading.ts" />
 /// <reference path="../actions/actionbase.ts" />
 /// <reference path="../actions/actiontypes.ts" />
 module SearchTiles.Stores {
@@ -8,8 +9,11 @@ module SearchTiles.Stores {
     import FilterAction = Actions.Filter.FilterAction;
     import ACTION_TYPES = Actions.ACTION_TYPES;
     import AjaxDataGetter = Utils.AjaxDataGetter;
+    import StubOutElementTileData = FakeData.StubOutElementTileData;
 
     const API_ENDPOINT = "/api/elementdata";
+
+    const TOTALLY_FAKE_LOADING_DELAY_MS = 2500;
 
     class ElementTileStoreClass extends StoreBase {
 
@@ -59,7 +63,10 @@ module SearchTiles.Stores {
         HandleTheFactAnActionHappened(action: ActionBase) {
             switch (action.ActionType) {
                 case ACTION_TYPES.APPLICATION_STARTED:
-                    this.GoAskForData();
+                    setTimeout(
+                        this.GoAskForData.bind(this),
+                        TOTALLY_FAKE_LOADING_DELAY_MS
+                    );
                     break;
 
                 case ACTION_TYPES.FILTER_CHANGED:
@@ -106,7 +113,9 @@ module SearchTiles.Stores {
     // (Of course this means we had better not instantiate two stores)
 
     // I like to stub everything out so the components have runtime protection
-    var _tileData: IElementModel[] = [];
+    // In this case, I'm generating some fake Element Tiles that spell
+    // out a loading message
+    var _tileData: IElementModel[] = StubOutElementTileData();
 
     var _dataHasLoaded = false;
 

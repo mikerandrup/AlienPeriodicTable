@@ -201,8 +201,40 @@ var SearchTiles;
         Utils.AjaxDataGetter = AjaxDataGetter;
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
 })(SearchTiles || (SearchTiles = {}));
+var SearchTiles;
+(function (SearchTiles) {
+    var Stores;
+    (function (Stores) {
+        var FakeData;
+        (function (FakeData) {
+            function StubOutElementTileData() {
+                return [
+                    makeTile(" "),
+                    makeTile("Lo"),
+                    makeTile("ad"),
+                    makeTile("in"),
+                    makeTile("g"),
+                    makeTile(".."),
+                ];
+            }
+            FakeData.StubOutElementTileData = StubOutElementTileData;
+            function makeTile(abbreviation) {
+                return {
+                    Abbreviation: abbreviation,
+                    Name: "Pleasewaitium",
+                    Identity: _identity++,
+                    Hue: 60
+                };
+            }
+            // Give all of these a negative number as their key, so they will
+            // transition out while the real element tiles transition in
+            var _identity = -10;
+        })(FakeData = Stores.FakeData || (Stores.FakeData = {}));
+    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
+})(SearchTiles || (SearchTiles = {}));
 /// <reference path="storebase.ts" />
 /// <reference path="../utils/ajax.ts" />
+/// <reference path="fakedata/elementtileloading.ts" />
 /// <reference path="../actions/actionbase.ts" />
 /// <reference path="../actions/actiontypes.ts" />
 var SearchTiles;
@@ -211,7 +243,9 @@ var SearchTiles;
     (function (Stores) {
         var ACTION_TYPES = SearchTiles.Actions.ACTION_TYPES;
         var AjaxDataGetter = SearchTiles.Utils.AjaxDataGetter;
+        var StubOutElementTileData = Stores.FakeData.StubOutElementTileData;
         var API_ENDPOINT = "/api/elementdata";
+        var TOTALLY_FAKE_LOADING_DELAY_MS = 2500;
         var ElementTileStoreClass = (function (_super) {
             __extends(ElementTileStoreClass, _super);
             function ElementTileStoreClass() {
@@ -247,7 +281,7 @@ var SearchTiles;
             ElementTileStoreClass.prototype.HandleTheFactAnActionHappened = function (action) {
                 switch (action.ActionType) {
                     case ACTION_TYPES.APPLICATION_STARTED:
-                        this.GoAskForData();
+                        setTimeout(this.GoAskForData.bind(this), TOTALLY_FAKE_LOADING_DELAY_MS);
                         break;
                     case ACTION_TYPES.FILTER_CHANGED:
                         // Okay, yeah so this is really weird.  I'm using a lamba as a way to type cast
@@ -282,7 +316,9 @@ var SearchTiles;
         // I'm hiding the store's private data here in the outer closure.
         // (Of course this means we had better not instantiate two stores)
         // I like to stub everything out so the components have runtime protection
-        var _tileData = [];
+        // In this case, I'm generating some fake Element Tiles that spell
+        // out a loading message
+        var _tileData = StubOutElementTileData();
         var _dataHasLoaded = false;
         // the sub-string we require to be present to include filtered elements
         var _filterValue = "";
@@ -405,6 +441,8 @@ var SearchTiles;
         // The CSSTransitionGroup does some cool stuff behind the scenes
         // in terms of ripping stuff out of the DOM when the exit animation has finished.
         var ANIMATION_DURATION_MS = 500;
+        // That being said, I'm going to offset it a little as an artistic preference
+        //ANIMATION_DURATION_MS += 50;
         Components.TileHolder = React.createClass({
             // has no props
             // again, there's lots of debate about whether there should
@@ -428,25 +466,11 @@ var SearchTiles;
             handleStoreChange: function () {
                 this.setState(this.grabDataForState());
             },
-            renderWithData: function () {
+            render: function () {
                 var childComponents = this.state.tileData.map(function (tile) {
                     return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
                 });
                 return (React.createElement("div", {className: "tileHolder"}, React.createElement(CSSTransitionGroup, {style: {}, transitionName: "spinnypop", transitionEnter: true, transitionLeave: true, transitionEnterTimeout: ANIMATION_DURATION_MS, transitionLeaveTimeout: ANIMATION_DURATION_MS}, childComponents)));
-            },
-            // This is actually pretty unnecessary.  Because we stubbed out
-            // an empty collection in the store that's available before
-            // data loads, this component can step over the empty collection
-            // and result in a no-op, which is actually valid and fine.
-            // Even better would be to stub out element tiles that spelled
-            // out the word "Loading" lol.  Totally doing that.
-            renderLoadingIndicator: function () {
-                return (React.createElement("div", {className: "tileHolder"}, "Like, loading the data and stuff.  Wait up for a sec."));
-            },
-            render: function () {
-                return this.state.dataIsReady ?
-                    this.renderWithData() :
-                    this.renderLoadingIndicator();
             }
         });
     })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
