@@ -244,8 +244,13 @@ var SearchTiles;
         var ACTION_TYPES = SearchTiles.Actions.ACTION_TYPES;
         var AjaxDataGetter = SearchTiles.Utils.AjaxDataGetter;
         var StubOutElementTileData = Stores.FakeData.StubOutElementTileData;
+        // Implemented on the .NET side as a Web API controller
         var API_ENDPOINT = "/api/elementdata";
+        // In order to show off the loading screen
         var TOTALLY_FAKE_LOADING_DELAY_MS = 2500;
+        // If we have a whole ton of them, and the ability to filter,
+        // there's no reason to deal with them all at once
+        var MAXIMUM_ELEMENT_TILES_AT_ONCE = 50;
         var ElementTileStoreClass = (function (_super) {
             __extends(ElementTileStoreClass, _super);
             function ElementTileStoreClass() {
@@ -267,7 +272,7 @@ var SearchTiles;
                         Abbreviation: element.Abbreviation,
                         Hue: element.Hue
                     };
-                });
+                }).slice(0, MAXIMUM_ELEMENT_TILES_AT_ONCE);
             };
             ElementTileStoreClass.prototype.getFilteredElementCollection = function () {
                 var hasFilter = _filterValue !== "";

@@ -11,9 +11,15 @@ module SearchTiles.Stores {
     import AjaxDataGetter = Utils.AjaxDataGetter;
     import StubOutElementTileData = FakeData.StubOutElementTileData;
 
+    // Implemented on the .NET side as a Web API controller
     const API_ENDPOINT = "/api/elementdata";
 
+    // In order to show off the loading screen
     const TOTALLY_FAKE_LOADING_DELAY_MS = 2500;
+
+    // If we have a whole ton of them, and the ability to filter,
+    // there's no reason to deal with them all at once
+    const MAXIMUM_ELEMENT_TILES_AT_ONCE = 50;
 
     class ElementTileStoreClass extends StoreBase {
 
@@ -27,7 +33,7 @@ module SearchTiles.Stores {
         getDataHasLoaded() {
             return _dataHasLoaded;
         }
- 
+
         // deep copy so we don't pass around a mutable reference
         // to our single source of truth.  there are definite
         // performance penalties to doing this everywhere, so use your judgement
@@ -41,7 +47,7 @@ module SearchTiles.Stores {
                         Hue: element.Hue
                     }
                 }
-            );
+            ).slice(0, MAXIMUM_ELEMENT_TILES_AT_ONCE);
         }
 
         getFilteredElementCollection() {
@@ -80,7 +86,7 @@ module SearchTiles.Stores {
                     break;
 
                 default:
-                    // do nothing;
+                // do nothing;
             }
         }
 

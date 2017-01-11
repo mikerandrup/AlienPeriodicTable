@@ -8,7 +8,7 @@ namespace SearchTiles.Models.AlienPeriodicTable
 {
     public class AlienElement : IElementModel
     {
-        private const int HASHER = 13;
+        private const int HASHER = 1039;
 
         public const int MAX_HUE = 360;
         private const int HUE_SPACING = 31;

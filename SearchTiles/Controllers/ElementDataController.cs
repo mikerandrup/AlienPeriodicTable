@@ -6,7 +6,7 @@ namespace SearchTiles.Controllers
 {
     public class ElementDataController : ApiController
     {
-        private const int NUMBER_OF_RESULTS = 100;
+        private const int NUMBER_OF_RESULTS = 1000;
 
         // GET: /api/elementdata
         public IEnumerable<IElementModel> Get()
