@@ -9,9 +9,13 @@ ___
 ![ScreenShot](/SearchTiles/content/images/screenshot.jpg?raw=true "Deterministic Random Element Names")
 
 ___
+
 **Presentation Dates:**  
+
 ___
+
 *North Dallas .NET User Group February Meeting*
+
 > Wed February 1st, 2016  
 > 6:30pm to 8:30pm
 > 
@@ -19,8 +23,11 @@ ___
 > 
 > **nThrive - Patient-to-Payment Solutions**  
 > [5543 Legacy Drive, Plano, TX 75024](https://goo.gl/maps/1OyNE)
+
 ___
+
 *MVP MIX Dallas 2016*
+
 > Thu March 9th, 2016  
 >  *(time to be announced)*  
 >    
@@ -30,15 +37,18 @@ ___
 > [15650 Addison Rd, Addison, TX 75001](https://goo.gl/maps/FaE52RGAZQv)  
 > 
 > *I promised Chander some exclusive content for his event, so look for the code to be taken a little further during this talk.*
+
 ___
+
 *ReactJS Dallas Meetup March Meeting*
+
 >*Tue March 14th, 2016*
 >7:45pm - 8:30pm  
 >
 >[ReactJS Dallas Meetup](https://www.meetup.com/ReactJS-Dallas)
 >  
->  Match.com Headquarters  
->  [8750 N Central Expressway #1400, Dallas TX 75231](https://goo.gl/maps/qTdvpZjRdcR2)
+>Match.com Headquarters  
+>[8750 N Central Expressway #1400, Dallas TX 75231](https://goo.gl/maps/qTdvpZjRdcR2)
 
 ___
 
