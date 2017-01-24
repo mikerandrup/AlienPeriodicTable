@@ -40,7 +40,7 @@ ___
 
 ___
 
-*ReactJS Dallas Meetup March Meeting*
+*ReactJS Dallas March Meetup*
 
 >*Tue March 14th, 2016*
 >7:45pm - 8:30pm  
