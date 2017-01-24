@@ -1,9 +1,45 @@
-# searchtiles (aka Alien Periodic Table)
-First pass at ASP.NET / React hybrid demo for NorthDallas.net February talk.
+# Alien Periodic Table (a.k.a SearchTiles)
 
+**Up and running with React in ASP.NET (without Node!)**
+
+React is a JavaScript library for building modern user interfaces. It's often used in a node-based stack, but needn't be. You can build your next feature in React in your existing ASP.NET MVC application seamlessly. This approach lets you experiment with the popular and powerful new framework without scrapping your existing application. It also allows you to use the existing strongly typed toolset in Visual Studio to maintain your data contracts, and avoid the fragility of plain JavaScript. We'll use TypeScript and Visual Studio 2015 to build an interactive app quickly. We'll look at the Flux architecture pattern, and what it looks like in a strongly typed environment. We won't need to install Node.
+___
 [Finished version running live on Azure](http://alienperiodictable.azurewebsites.net)
 
 ![ScreenShot](/SearchTiles/content/images/screenshot.jpg?raw=true "Deterministic Random Element Names")
 
-[![Stories in Ready](https://badge.waffle.io/mikerandrup/searchtiles.png?label=ready&title=Ready)](https://waffle.io/mikerandrup/searchtiles)
+___
+**Presentation Dates:**  
+___
+*North Dallas .NET User Group February Meeting*
+> Wed February 1st, 2016  
+> 6:30pm to 8:30pm
+> 
+> [North Dallas .NET User Group](http://northdallas.net)  
+> 
+> **nThrive - Patient-to-Payment Solutions**  
+> [5543 Legacy Drive, Plano, TX 75024](https://goo.gl/maps/1OyNE)
+___
+*MVP MIX Dallas 2016*
+> Thu March 9th, 2016  
+>  *(time to be announced)*  
+>    
+> [MVPMIX Dallas - by Chander Dhall, Inc.](http://mvpmix.com/dallas)  
+>  
+> **Addison Convention Center**  
+> [15650 Addison Rd, Addison, TX 75001](https://goo.gl/maps/FaE52RGAZQv)  
+> 
+> *I promised Chander some exclusive content for his event, so look for the code to be taken a little further during this talk.*
+___
+*ReactJS Dallas Meetup March Meeting*
+>*Tue March 14th, 2016*
+>7:45pm - 8:30pm  
+>
+>[ReactJS Dallas Meetup](https://www.meetup.com/ReactJS-Dallas)
+>  
+>  Match.com Headquarters  
+>  [8750 N Central Expressway #1400, Dallas TX 75231](https://goo.gl/maps/qTdvpZjRdcR2)
 
+___
+
+[![Stories in Ready](https://badge.waffle.io/mikerandrup/searchtiles.png?label=ready&title=Ready)](https://waffle.io/mikerandrup/searchtiles)
