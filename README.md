@@ -14,19 +14,19 @@ ___
 
 ___
 
-*North Dallas .NET User Group February Meeting*
+*North Dallas .NET User Group - February Meeting*
 
 > Wed February 1st, 2016  
 > 6:30pm to 8:30pm
 > 
 > [North Dallas .NET User Group](http://northdallas.net)  
 > 
-> **nThrive - Patient-to-Payment Solutions**  
+> **nThrive Headquarters**  
 > [5543 Legacy Drive, Plano, TX 75024](https://goo.gl/maps/1OyNE)
 
 ___
 
-*MVP MIX Dallas 2016*
+*MVP MIX - Dallas 2016*
 
 > Thu March 9th, 2016  
 >  *(time to be announced)*  
@@ -40,9 +40,9 @@ ___
 
 ___
 
-*ReactJS Dallas March Meetup*
+*ReactJS Dallas - March Meetup*
 
->*Tue March 14th, 2016*
+>*Tue March 14th, 2016*  
 >7:45pm - 8:30pm  
 >
 >[ReactJS Dallas Meetup](https://www.meetup.com/ReactJS-Dallas)
