@@ -1,9 +1,11 @@
-# Alien Periodic Table (a.k.a SearchTiles)
+#Up and running with React in ASP.NET (without Node!)
 
-**Up and running with React in ASP.NET (without Node!)**
+React is a JavaScript library for building modern user interfaces. It's often used in a node-based stack, but needn't be. You can build your next feature in React in your existingÂ ASP.NETÂ MVC application seamlessly. This approach lets you experiment with the popular and powerful new framework without scrapping your existing application. It also allows you to use the existing strongly typed toolset in Visual Studio to maintain your data contracts, and avoid the fragility of plain JavaScript. We'll use TypeScript and Visual Studio 2015 to build an interactive app quickly. We'll look at the Flux architecture pattern, and what it looks like in a strongly typed environment. We won't need to install Node.
 
-React is a JavaScript library for building modern user interfaces. It's often used in a node-based stack, but needn't be. You can build your next feature in React in your existing ASP.NET MVC application seamlessly. This approach lets you experiment with the popular and powerful new framework without scrapping your existing application. It also allows you to use the existing strongly typed toolset in Visual Studio to maintain your data contracts, and avoid the fragility of plain JavaScript. We'll use TypeScript and Visual Studio 2015 to build an interactive app quickly. We'll look at the Flux architecture pattern, and what it looks like in a strongly typed environment. We won't need to install Node.
 ___
+
+*The code demo for this talk is called "Alien Periodic Table"*
+
 [Finished version running live on Azure](http://alienperiodictable.azurewebsites.net)
 
 ![ScreenShot](/SearchTiles/content/images/screenshot.jpg?raw=true "Deterministic Random Element Names")
