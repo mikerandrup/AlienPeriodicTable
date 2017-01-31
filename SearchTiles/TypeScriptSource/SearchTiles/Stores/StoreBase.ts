@@ -1,6 +1,6 @@
 ﻿/// <reference path="../actions/actionbase.ts" />
 /// <reference path="../actions/dispatcher.ts" />
-/// <reference path="../utils/eventemitter.ts" /> 
+/// <reference path="../Utils/eventemitter.ts" /> 
 
 module SearchTiles.Stores {
 

@@ -21,9 +21,6 @@ var SearchTiles;
     var Actions;
     (function (Actions) {
         (function (ACTION_TYPES) {
-            ACTION_TYPES[ACTION_TYPES["APPLICATION_STARTED"] = 0] = "APPLICATION_STARTED";
-            ACTION_TYPES[ACTION_TYPES["APPLICATION_SHUTDOWN"] = 1] = "APPLICATION_SHUTDOWN";
-            ACTION_TYPES[ACTION_TYPES["FILTER_CHANGED"] = 2] = "FILTER_CHANGED";
         })(Actions.ACTION_TYPES || (Actions.ACTION_TYPES = {}));
         var ACTION_TYPES = Actions.ACTION_TYPES;
         ;
@@ -33,6 +30,9 @@ var SearchTiles;
 (function (SearchTiles) {
     var Utils;
     (function (Utils) {
+        // Based on Jerome Etienne's "MicroEvent" package
+        // https://github.com/jeromeetienne/microevent.js
+        // Why? 15 lines of code and it's well tested.
         var registeredEvents = {};
         Utils.EventEmitter = {
             on: function (eventName, handler) {
@@ -54,6 +54,8 @@ var SearchTiles;
         };
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
 })(SearchTiles || (SearchTiles = {}));
+/// <reference path="actionbase.ts" />
+/// <reference path="../Utils/eventemitter.ts" />
 var SearchTiles;
 (function (SearchTiles) {
     var Actions;
@@ -75,49 +77,6 @@ var SearchTiles;
 })(SearchTiles || (SearchTiles = {}));
 var SearchTiles;
 (function (SearchTiles) {
-    var Actions;
-    (function (Actions) {
-        var Filter;
-        (function (Filter) {
-            function FilterUpdated(newValue) {
-                var filterChangedAction = new FilterAction();
-                filterChangedAction.Payload = {
-                    newValue: newValue
-                };
-                Actions.Dispatcher.dispatch(filterChangedAction);
-            }
-            Filter.FilterUpdated = FilterUpdated;
-            var FilterAction = (function (_super) {
-                __extends(FilterAction, _super);
-                function FilterAction() {
-                    _super.call(this);
-                    this.ActionType = Actions.ACTION_TYPES.FILTER_CHANGED;
-                }
-                return FilterAction;
-            }(Actions.ActionBase));
-            Filter.FilterAction = FilterAction;
-        })(Filter = Actions.Filter || (Actions.Filter = {}));
-    })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
-})(SearchTiles || (SearchTiles = {}));
-;
-var SearchTiles;
-(function (SearchTiles) {
-    var Actions;
-    (function (Actions) {
-        var Lifecycle;
-        (function (Lifecycle) {
-            function ApplicationStarted() {
-                var appStartedAction = new Actions.ActionBase();
-                appStartedAction.ActionType = Actions.ACTION_TYPES.APPLICATION_STARTED;
-                Actions.Dispatcher.dispatch(appStartedAction);
-            }
-            Lifecycle.ApplicationStarted = ApplicationStarted;
-        })(Lifecycle = Actions.Lifecycle || (Actions.Lifecycle = {}));
-    })(Actions = SearchTiles.Actions || (SearchTiles.Actions = {}));
-})(SearchTiles || (SearchTiles = {}));
-;
-var SearchTiles;
-(function (SearchTiles) {
     var Utils;
     (function (Utils) {
         var AppStart;
@@ -129,6 +88,32 @@ var SearchTiles;
         })(AppStart = Utils.AppStart || (Utils.AppStart = {}));
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
 })(SearchTiles || (SearchTiles = {}));
+/// <reference path="Utils/appstart.ts" />
+/// <reference path="../librarydefinitions/react-stub.d.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
+    var Application = React.createClass({
+        render: function () {
+            return (React.createElement("div", null, "React is working, and has mounted the \"Root Component\"."));
+        }
+    });
+    // This root application component gets to reach into the DOM.
+    // Such things won't typically happen anywhere else.
+    function InitializeApplication() {
+        // Feel free to get rid of this thing immediately after seeing it work.
+        alert("TypeScript is working, and the compiled javascript has loaded on the page.");
+        // This tells ReactDOM to mount the root component in the DOM
+        ReactDOM.render(React.createElement(Application, null), document.getElementById('application'));
+        // TODO: Define Application LifeCycle actions and trigger one here
+        //  - This kicks off everything going on in the Flux pattern
+    }
+    // This binds our startup to the DOM being ready
+    RegisterDOMReadyFunction(InitializeApplication);
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="../actions/actionbase.ts" />
+/// <reference path="../actions/dispatcher.ts" />
+/// <reference path="../Utils/eventemitter.ts" /> 
 var SearchTiles;
 (function (SearchTiles) {
     var Stores;
@@ -142,20 +127,42 @@ var SearchTiles;
                 this.StoreSpecificChangeEventName = BASE_NAME_OF_CHANGE_EVENTS + nameOfDerivedStore;
                 Dispatcher.subscribeToActions(this.HandleTheFactAnActionHappened.bind(this));
             }
+            // Components will use this to be notified of data updates
             StoreBase.prototype.RegisterChangeHandler = function (changeCallback) {
                 EventEmitter.on(this.StoreSpecificChangeEventName, changeCallback);
             };
+            // When a component is about to go away, it should call this
             StoreBase.prototype.DeRegisterChangeHandler = function (changeCallback) {
                 EventEmitter.off(this.StoreSpecificChangeEventName, changeCallback);
             };
+            // Derived stores call this to tell components something has changed
             StoreBase.prototype.EmitChange = function () {
                 EventEmitter.trigger(this.StoreSpecificChangeEventName, NULL_PAYLOAD_FOR_EVENTS);
             };
+            // Allows store to know about actions in the app
             StoreBase.prototype.HandleTheFactAnActionHappened = function (action) {
+                // by default, do nothing.
+                // override in derived stores as needed
             };
             return StoreBase;
         }());
         Stores.StoreBase = StoreBase;
+    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
+})(SearchTiles || (SearchTiles = {}));
+/// <reference path="storebase.ts" />
+var SearchTiles;
+(function (SearchTiles) {
+    var Stores;
+    (function (Stores) {
+        // This is used to namespace change events to this store only
+        var NAME_OF_STORE = "MyExampleDerivedStore";
+        var MyExampleDerivedStore = (function (_super) {
+            __extends(MyExampleDerivedStore, _super);
+            function MyExampleDerivedStore() {
+                _super.call(this, NAME_OF_STORE);
+            }
+            return MyExampleDerivedStore;
+        }(Stores.StoreBase));
     })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
 })(SearchTiles || (SearchTiles = {}));
 var SearchTiles;
@@ -177,122 +184,10 @@ var SearchTiles;
 })(SearchTiles || (SearchTiles = {}));
 var SearchTiles;
 (function (SearchTiles) {
-    var Stores;
-    (function (Stores) {
-        var FakeData;
-        (function (FakeData) {
-            function StubOutElementTileData() {
-                return [
-                    makeTile(".."),
-                    makeTile("Lo"),
-                    makeTile("ad"),
-                    makeTile("in"),
-                    makeTile("g"),
-                    makeTile(".."),
-                ];
-            }
-            FakeData.StubOutElementTileData = StubOutElementTileData;
-            function makeTile(abbreviation) {
-                return {
-                    Abbreviation: abbreviation,
-                    Name: "Pleasewaitium",
-                    Identity: _identity++,
-                    Hue: 60
-                };
-            }
-            var _identity = -10;
-        })(FakeData = Stores.FakeData || (Stores.FakeData = {}));
-    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var Stores;
-    (function (Stores) {
-        var ACTION_TYPES = SearchTiles.Actions.ACTION_TYPES;
-        var AjaxDataGetter = SearchTiles.Utils.AjaxDataGetter;
-        var StubOutElementTileData = Stores.FakeData.StubOutElementTileData;
-        var NAME_OF_STORE = "ElementTileStore";
-        var API_ENDPOINT = "/api/elementdata";
-        var TOTALLY_FAKE_LOADING_DELAY_MS = 2500;
-        var MAXIMUM_ELEMENT_TILES_AT_ONCE = 50;
-        var ElementTileStoreClass = (function (_super) {
-            __extends(ElementTileStoreClass, _super);
-            function ElementTileStoreClass() {
-                _super.call(this, NAME_OF_STORE);
-            }
-            ElementTileStoreClass.prototype.getDataHasLoaded = function () {
-                return _dataHasLoaded;
-            };
-            ElementTileStoreClass.prototype.deepCopyCollection = function (collection) {
-                return collection.map(function (element) {
-                    return {
-                        Identity: element.Identity,
-                        Name: element.Name,
-                        Abbreviation: element.Abbreviation,
-                        Hue: element.Hue
-                    };
-                }).slice(0, MAXIMUM_ELEMENT_TILES_AT_ONCE);
-            };
-            ElementTileStoreClass.prototype.getFilteredElementCollection = function () {
-                var hasFilter = _filterValue !== "";
-                if (hasFilter) {
-                    return this.deepCopyCollection(_tileData.filter(applyFilter));
-                }
-                else {
-                    return this.deepCopyCollection(_tileData);
-                }
-            };
-            ElementTileStoreClass.prototype.HandleTheFactAnActionHappened = function (action) {
-                switch (action.ActionType) {
-                    case ACTION_TYPES.APPLICATION_STARTED:
-                        setTimeout(this.GoAskForData.bind(this), TOTALLY_FAKE_LOADING_DELAY_MS);
-                        break;
-                    case ACTION_TYPES.FILTER_CHANGED:
-                        _filterValue = (function (action) { return action.Payload.newValue; })(action);
-                        _filterValue = _filterValue.toLowerCase();
-                        this.EmitChange();
-                        break;
-                    default:
-                }
-            };
-            ElementTileStoreClass.prototype.GoAskForData = function () {
-                AjaxDataGetter(API_ENDPOINT, this.DealWithDataThatArrived.bind(this));
-            };
-            ElementTileStoreClass.prototype.DealWithDataThatArrived = function (apiData) {
-                _tileData = apiData;
-                _dataHasLoaded = true;
-                this.EmitChange();
-            };
-            return ElementTileStoreClass;
-        }(Stores.StoreBase));
-        function applyFilter(tile) {
-            return tile.Name.toLowerCase().indexOf(_filterValue) > -1;
-        }
-        var _tileData = StubOutElementTileData();
-        var _dataHasLoaded = false;
-        var _filterValue = "";
-        Stores.ElementTileStore = new ElementTileStoreClass();
-    })(Stores = SearchTiles.Stores || (SearchTiles.Stores = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var Components;
-    (function (Components) {
-        Components.ElementTile = React.createClass({
-            render: function () {
-                var tile = this.props.tileData;
-                var backroundStyles = {
-                    backgroundColor: "hsl(" + tile.Hue + ", 100%, 80%)"
-                };
-                return (React.createElement("div", {style: backroundStyles, className: "elementTile"}, React.createElement("div", {className: "elementIdentity"}, tile.Identity), React.createElement("div", {className: "elementAbbrev"}, tile.Abbreviation), React.createElement("div", {className: "elementName"}, tile.Name)));
-            }
-        });
-    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
     var Utils;
     (function (Utils) {
+        // I decided to drop this in, and lose the `lodash` dep
+        // Thank you to Remy Sharp https://remysharp.com/2010/07/21/throttling-function-calls
         function Throttle(functionToThrottle, threshholdMilliseconds, theThisContext) {
             threshholdMilliseconds || (threshholdMilliseconds = 250);
             var last, deferTimer;
@@ -300,6 +195,7 @@ var SearchTiles;
                 var context = theThisContext || this;
                 var now = +new Date, args = arguments;
                 if (last && now < last + threshholdMilliseconds) {
+                    // hold on to it
                     clearTimeout(deferTimer);
                     deferTimer = setTimeout(function () {
                         last = now;
@@ -314,98 +210,5 @@ var SearchTiles;
         }
         Utils.Throttle = Throttle;
     })(Utils = SearchTiles.Utils || (SearchTiles.Utils = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var Components;
-    (function (Components) {
-        var FilterUpdatedAction = SearchTiles.Actions.Filter.FilterUpdated;
-        var Throttle = SearchTiles.Utils.Throttle;
-        var THROTTLE_MILLISECONDS = 500;
-        Components.FilterBox = React.createClass({
-            componentDidMount: function () {
-                this.throttledFilterAction = Throttle(FilterUpdatedAction, THROTTLE_MILLISECONDS, this);
-            },
-            getInitialState: function () {
-                return {
-                    filterValue: ""
-                };
-            },
-            handleTextChange: function (event) {
-                var updatedValue = event.target.value;
-                this.setState({
-                    filterValue: updatedValue
-                });
-                this.throttledFilterAction(updatedValue);
-            },
-            handleTextClear: function () {
-                this.handleTextChange(makeFakeEventWithEmptyValue());
-            },
-            render: function () {
-                return (React.createElement("div", {className: "filterHolder"}, React.createElement("input", {onChange: this.handleTextChange, value: this.state.filterValue, className: "filterInput", placeholder: "type to filter elements"}), React.createElement("button", {onClick: this.handleTextClear, className: "filterClear"}, "X")));
-            }
-        });
-        function makeFakeEventWithEmptyValue() {
-            return {
-                target: {
-                    value: ""
-                }
-            };
-        }
-    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var Components;
-    (function (Components) {
-        var ElementTileStore = SearchTiles.Stores.ElementTileStore;
-        var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-        var ANIMATION_CSS_CLASS_PREFIX = "spinnypop";
-        var ANIMATION_DURATION_MS = 500;
-        ANIMATION_DURATION_MS += 200;
-        Components.TileHolder = React.createClass({
-            componentDidMount: function () {
-                ElementTileStore.RegisterChangeHandler(this.handleStoreChange.bind(this));
-            },
-            componentWillUnmount: function () {
-                ElementTileStore.DeRegisterChangeHandler(this.handleStoreChange.bind(this));
-            },
-            getInitialState: function () {
-                return this.grabDataForState();
-            },
-            grabDataForState: function () {
-                return {
-                    dataIsReady: ElementTileStore.getDataHasLoaded(),
-                    tileData: ElementTileStore.getFilteredElementCollection()
-                };
-            },
-            handleStoreChange: function () {
-                this.setState(this.grabDataForState());
-            },
-            render: function () {
-                var childTileComponents = this.state.tileData.map(function (tile) {
-                    return React.createElement(Components.ElementTile, {tileData: tile, key: tile.Identity});
-                });
-                return (React.createElement("div", {className: "tileHolder"}, React.createElement(CSSTransitionGroup, {style: {}, transitionName: ANIMATION_CSS_CLASS_PREFIX, transitionEnter: true, transitionLeave: true, transitionEnterTimeout: ANIMATION_DURATION_MS, transitionLeaveTimeout: ANIMATION_DURATION_MS}, childTileComponents)));
-            }
-        });
-    })(Components = SearchTiles.Components || (SearchTiles.Components = {}));
-})(SearchTiles || (SearchTiles = {}));
-var SearchTiles;
-(function (SearchTiles) {
-    var RegisterDOMReadyFunction = SearchTiles.Utils.AppStart.RegisterDomReadyFunction;
-    var TriggerApplicationStartedAction = SearchTiles.Actions.Lifecycle.ApplicationStarted;
-    var TileHolder = SearchTiles.Components.TileHolder;
-    var FilterBox = SearchTiles.Components.FilterBox;
-    var Application = React.createClass({
-        render: function () {
-            return (React.createElement("div", null, React.createElement(FilterBox, null), React.createElement(TileHolder, null)));
-        }
-    });
-    function InitializeApplication() {
-        ReactDOM.render(React.createElement(Application, null), document.getElementById('application'));
-        TriggerApplicationStartedAction();
-    }
-    RegisterDOMReadyFunction(InitializeApplication);
 })(SearchTiles || (SearchTiles = {}));
 //# sourceMappingURL=compiledtypescript.js.map

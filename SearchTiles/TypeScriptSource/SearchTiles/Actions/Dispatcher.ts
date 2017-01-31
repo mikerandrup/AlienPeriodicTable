@@ -1,5 +1,5 @@
 ﻿/// <reference path="actionbase.ts" />
-/// <reference path="../utils/eventemitter.ts" />
+/// <reference path="../Utils/eventemitter.ts" />
 module SearchTiles.Actions {
 
     import EventEmitter = Utils.EventEmitter;

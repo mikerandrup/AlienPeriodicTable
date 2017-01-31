@@ -1,23 +1,15 @@
-﻿/// <reference path="actions/lifecycleactions.ts" />
-/// <reference path="utils/appstart.ts" />
-/// <reference path="components/elementtile.tsx" />
-/// <reference path="components/filterbox.tsx" />
-/// <reference path="components/tileholder.tsx" />
+﻿/// <reference path="Utils/appstart.ts" />
 /// <reference path="../librarydefinitions/react-stub.d.ts" />
 module SearchTiles {
 
     import RegisterDOMReadyFunction = Utils.AppStart.RegisterDomReadyFunction;
-    import TriggerApplicationStartedAction = Actions.Lifecycle.ApplicationStarted;
-    import TileHolder = Components.TileHolder;
-    import FilterBox = Components.FilterBox;
 
     var Application = React.createClass({
 
         render: function () {
             return (
                 <div>
-                    <FilterBox />
-                    <TileHolder />
+                    React is working, and has mounted the "Root Component".
                 </div>
             );
         }
@@ -25,8 +17,11 @@ module SearchTiles {
     });
 
     // This root application component gets to reach into the DOM.
-    // Such things won't happen anywhere else.
+    // Such things won't typically happen anywhere else.
     function InitializeApplication() {
+
+        // Feel free to get rid of this thing immediately after seeing it work.
+        alert("TypeScript is working, and the compiled javascript has loaded on the page.");
 
         // This tells ReactDOM to mount the root component in the DOM
         ReactDOM.render(
@@ -34,8 +29,8 @@ module SearchTiles {
             document.getElementById('application')
         );
 
-        // This kicks off everything going on in the Flux pattern
-        TriggerApplicationStartedAction();
+        // TODO: Define Application LifeCycle actions and trigger one here
+        //  - This kicks off everything going on in the Flux pattern
 
     }
 

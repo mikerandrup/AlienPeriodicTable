@@ -1,0 +1,2 @@
+﻿This folder wouldn't be included in source control without some file in it.
+Once you create your first component, feel free to kill this file.

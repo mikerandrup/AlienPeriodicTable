@@ -2,10 +2,7 @@
 
     export enum ACTION_TYPES {
 
-        APPLICATION_STARTED,
-        APPLICATION_SHUTDOWN,
-
-        FILTER_CHANGED
+        // build out our action type enum as we go
 
     };
 }

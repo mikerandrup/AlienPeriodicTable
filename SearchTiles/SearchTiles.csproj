@@ -48,8 +48,7 @@
     <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
-    <TypeScriptSourceRoot>.\TypeScriptSource</TypeScriptSourceRoot>
-  </PropertyGroup>
+    <TypeScriptSourceRoot>.\TypeScriptSource</TypeScriptSourceRoot>  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -161,8 +160,11 @@
   <ItemGroup>
     <Content Include="content\images\screenshot.jpg" />
     <Content Include="content\javascript\compiledtypescript.js" />
+    <Content Include="content\javascript\libraries\react-15-4-2-with-addons.min.js" />
+    <Content Include="content\javascript\libraries\react-dom-15-4-2.min.js" />
     <Content Include="content\stylesheets\animation.css" />
     <Content Include="Global.asax" />
+    <Content Include="TypeScriptSource\SearchTiles\Components\placeholder.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -186,8 +188,9 @@
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\ReactApplication.cshtml" />
-    <Content Include="content\javascript\compiledtypescript.js.map" />
     <Content Include="content\stylesheets\main.css" />
+    <Content Include="TypeScriptSource\web.config" />
+    <Content Include="content\javascript\compiledtypescript.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -206,17 +209,11 @@
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionBase.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\ActionTypes.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\Dispatcher.ts" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\FilterActions.ts" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Actions\LifecycleActions.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Application.tsx" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\ElementTile.tsx" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\FilterBox.tsx" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\ElementTileStore.ts" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\FakeData\ElementTileLoading.ts" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\DerivedStoreExample.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Stores\StoreBase.ts" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Components\TileHolder.tsx" />
+    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\AjaxDataGetter.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\AppStart.ts" />
-    <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\Ajax.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\EventEmitter.ts" />
     <TypeScriptCompile Include="TypeScriptSource\SearchTiles\Utils\Throttle.ts" />
   </ItemGroup>
