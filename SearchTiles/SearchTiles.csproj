@@ -48,7 +48,8 @@
     <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
-    <TypeScriptSourceRoot>.\TypeScriptSource</TypeScriptSourceRoot>  </PropertyGroup>
+    <TypeScriptSourceRoot>.\TypeScriptSource</TypeScriptSourceRoot>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -189,7 +190,6 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\ReactApplication.cshtml" />
     <Content Include="content\stylesheets\main.css" />
-    <Content Include="TypeScriptSource\web.config" />
     <Content Include="content\javascript\compiledtypescript.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
