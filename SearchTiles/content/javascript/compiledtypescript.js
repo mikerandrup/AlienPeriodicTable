@@ -342,7 +342,7 @@ var SearchTiles;
                 this.handleTextChange(makeFakeEventWithEmptyValue());
             },
             render: function () {
-                return (React.createElement("div", {className: "filterHolder"}, React.createElement("input", {onChange: this.handleTextChange, value: this.state.filterValue, className: "filterInput", placeholder: "type to filter elements"}), React.createElement("button", {onClick: this.handleTextClear, className: "filterClear"}, "X")));
+                return (React.createElement("div", {className: "filterHolder"}, React.createElement("input", {onChange: this.handleTextChange, value: this.state.filterValue, className: "filterInput", placeholder: "starting typing to filter elements"}), React.createElement("button", {onClick: this.handleTextClear, className: "filterClear"}, "X")));
             }
         });
         function makeFakeEventWithEmptyValue() {
