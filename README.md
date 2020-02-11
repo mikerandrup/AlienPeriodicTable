@@ -6,8 +6,6 @@ ___
 
 *The code demo for this talk is called "Alien Periodic Table"*
 
-[Finished version running live on Azure](http://alienperiodictable.azurewebsites.net)
-
 ![ScreenShot](/SearchTiles/content/images/screenshot.jpg?raw=true "Deterministic Random Element Names")
 
 ___
@@ -53,5 +51,3 @@ ___
 >[8750 N Central Expressway #1400, Dallas TX 75231](https://goo.gl/maps/qTdvpZjRdcR2)
 
 ___
-
-[![Stories in Ready](https://badge.waffle.io/mikerandrup/searchtiles.png?label=ready&title=Ready)](https://waffle.io/mikerandrup/searchtiles)
