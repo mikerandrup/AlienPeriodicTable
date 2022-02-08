@@ -37,17 +37,3 @@ ___
 > [15650 Addison Rd, Addison, TX 75001](https://goo.gl/maps/FaE52RGAZQv)  
 > 
 > *I promised Chander some exclusive content for his event, so look for the code to be taken a little further during this talk.*
-
-___
-
-*ReactJS Dallas - March Meetup*
-
->*Tue March 14th, 2016*  
->7:45pm - 8:30pm  
->
->[ReactJS Dallas Meetup](https://www.meetup.com/ReactJS-Dallas)
->  
->Match.com Headquarters  
->[8750 N Central Expressway #1400, Dallas TX 75231](https://goo.gl/maps/qTdvpZjRdcR2)
-
-___
